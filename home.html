@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="input.css">
+</head>
+
+<body class="bg-black overflow-y-hidden">
+<section id="jokeSection" class="relative text-white px-5">
+    <h1 class="text-4xl text-center pt-40 text-white">Random Joke Generator</h1>
+    <video autoplay loop muted playsinline class="background-clip absolute top-0 left-0 w-full h-[1000px]  md:h-fit object-cover -z-10">
+        <source src="bg_video.mp4" type="video/mp4">
+    </video>
+    <div class="container mx-auto text-center">
+        <label for="category" class="text-lg">Select a Category:</label>
+        <select id="category" name="category" class="mt-2 p-2 bg-transparent text-black font-bold border">
+            <option value="Any">Any</option>
+            <option value="Miscellaneous">Miscellaneous</option>
+            <option value="Programming">Programming</option>
+            <option value="Pun">Pun</option>
+        </select>
+        <button id="getJokeButton" class="bg-blue-500 text-white py-2 px-4 mt-4 rounded hover:bg-blue-600">
+            Get Joke
+        </button>
+        <div id="jokeContainer" class="mt-8">
+            <p id="jokeCategory" class="text-xl font-bold"></p>
+            <p id="joke" class="text-lg md:px-36 font-bold"></p>
+        </div>
+    </div>
+</section>
+
+    <script>
+        const jokeCategoryElement = document.getElementById('jokeCategory');
+const jokeElement = document.getElementById('joke');
+
+document.getElementById('getJokeButton').addEventListener('click', async () => {
+    const selectedCategory = document.getElementById('category').value;
+    const jokeData = await fetchJoke(selectedCategory);
+
+    if (jokeData) {
+        jokeCategoryElement.textContent = jokeData.category;
+        jokeCategoryElement.style.color = getRandomColor();
+        jokeElement.textContent = jokeData.joke;
+        jokeElement.style.color = getRandomColor();
+    } else {
+        jokeCategoryElement.textContent = '';
+        jokeElement.textContent = 'Oops! Something went wrong. Please try again later.';
+    }
+});
+
+async function fetchJoke(category) {
+    try {
+        const apiUrl = `https://v2.jokeapi.dev/joke/${category}?type=single`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        return {
+            category: data.category,
+            joke: data.joke
+        };
+    } catch (error) {
+        console.log('Error fetching joke:', error);
+        return null;
+    }
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+    </script>
+</body>
+</html>

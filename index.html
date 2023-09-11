@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Welcome Animation</title>
+    <style>
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-600vh);
+            transition: opacity 0.3s, transform 0.3s;
+            font-size: 3rem;
+            color: red; 
+        }
+        @keyframes fall {
+            0% {
+                opacity: 0;
+                transform: translateY(-600vh);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center bg-black overflow-hidden">
+    <div class=" text-4xl font-bold" id="welcome">
+        <span class="letter" style="animation-delay: 0s;">W</span>
+        <span class="letter" style="animation-delay: 0.2s;">E</span>
+        <span class="letter" style="animation-delay: 0.4s;">L</span>
+        <span class="letter" style="animation-delay: 0.6s;">C</span>
+        <span class="letter" style="animation-delay: 0.8s;">O</span>
+        <span class="letter" style="animation-delay: 1s;">M</span>
+        <span class="letter" style="animation-delay: 1.2s;">E</span>
+    </div>
+    <script>
+        const letters = document.querySelectorAll('.letter');
+        const animationDuration = 3000; 
+        const totalDuration = letters.length * 300;
+        setTimeout(() => {
+            window.location.href = 'home.html'; 
+        }, animationDuration);
+        letters.forEach((letter, index) => {
+            setTimeout(() => {
+                letter.style.opacity = '1';
+                letter.style.transform = 'translateY(0)';
+            }, 200 * index);
+        });
+    </script>
+</body>
+</html>
